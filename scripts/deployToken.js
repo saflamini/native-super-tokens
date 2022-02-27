@@ -13,7 +13,7 @@ const INativeSuperTokenABI = INativeSuperToken.abi;
 const ISuperTokenFactory = require("../artifacts/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperTokenFactory.sol/ISuperTokenFactory.json");
 const ISuperTokenFactoryABI = ISuperTokenFactory.abi;
 const kovanSuperTokenFactoryAddress = "0xF5F666AC8F581bAef8dC36C7C8828303Bd4F8561";
-const provider = new ethers.providers.JsonRpcProvider(process.env.KOVAN_URL);
+const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 
 
 
@@ -28,17 +28,16 @@ async function main() {
   const nativeSuperTokenProxy = await NativeSuperTokenProxy.deploy();
   await nativeSuperTokenProxy.deployed();
 
-  const nativeSuperToken = new ethers.Contract(nativeSuperTokenProxy.address, INativeSuperTokenABI, signer);
 
   const superTokenFactory = new ethers.Contract(kovanSuperTokenFactoryAddress, ISuperTokenFactoryABI, signer);
 
   console.log("Invoking initializeCustomSuperToken...");
   
-  await superTokenFactory.initializeCustomSuperToken(nativeSuperToken.address).then(console.log);
+  await superTokenFactory.initializeCustomSuperToken(nativeSuperTokenProxy.address).then(console.log);
   
   console.log("Invoking Initialize on the token contract...");
   
-  await nativeSuperToken.initialize("My Super Token", "MST", 10000000000).then(console.log)
+  await nativeSuperTokenProxy.initialize("My Native Super Token", "MST", 10000000000).then(console.log)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -1,5 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-etherscan");
 require('hardhat-deploy');
 require("dotenv").config();
 // require('@openzeppelin/hardhat-upgrades');
@@ -26,11 +27,14 @@ module.exports = {
   solidity: "0.7.6",
   networks: {
     kovan: {
-      url: `${process.env.KOVAN_URL}`,
+      url: `${process.env.RPC_URL}`,
       accounts: [`${process.env.PRIVATE_KEY}`]
     }
   },
   namedAccounts: {
     deployer: 0
+  },
+  etherscan: {
+    apiKey: `${process.env.ETHERSCAN_API}`
   }
 };

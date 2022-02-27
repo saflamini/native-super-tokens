@@ -19,7 +19,7 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  *
  * @author Superfluid
  */
-contract SamToken is INativeSuperTokenCustom, CustomSuperTokenBase, UUPSProxy {
+contract NativeSuperTokenProxy is INativeSuperTokenCustom, UUPSProxy {
     function initialize(string calldata name, string calldata symbol, uint256 initialSupply)
         external override
     {

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPLv3
-pragma solidity ^0.7.0;
+pragma solidity ^0.7.6;
 
 import {
     ISuperToken,
@@ -19,7 +19,7 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  *
  * @author Superfluid
  */
-contract NativeSuperTokenProxy is INativeSuperTokenCustom, UUPSProxy {
+contract NativeSuperTokenProxy is INativeSuperTokenCustom, CustomSuperTokenBase, UUPSProxy {
     function initialize(string calldata name, string calldata symbol, uint256 initialSupply)
         external override
     {

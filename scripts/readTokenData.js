@@ -5,6 +5,7 @@ const NativeSuperTokenProxy = require("../artifacts/@superfluid-finance/ethereum
 
 const NativeSuperTokenProxyABI = NativeSuperTokenProxy.abi;
 
+//note: need to replace the address here with your token
 const nativeSuperToken = new ethers.Contract("0xebd2371d3411ec42ad57f3c5d58e871858e34610", NativeSuperTokenProxyABI, provider);
 
 async function main() {

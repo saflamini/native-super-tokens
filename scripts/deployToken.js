@@ -5,7 +5,8 @@ const hre = require("hardhat");
 require("dotenv")
 const ISuperTokenFactory = require("../artifacts/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperTokenFactory.sol/ISuperTokenFactory.json");
 const ISuperTokenFactoryABI = ISuperTokenFactory.abi;
-const kovanSuperTokenFactoryAddress = "0x94f26B4c8AD12B18c12f38E878618f7664bdcCE2";
+//note - need to change this address to the super token factory on your network. this is for kovan
+const SuperTokenFactoryAddress = "0xF5F666AC8F581bAef8dC36C7C8828303Bd4F8561";
 const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 
 async function main() {
@@ -21,7 +22,7 @@ async function main() {
 
   console.log('native super token proxy deployed to: ', nativeSuperTokenProxy.address);
 
-  const superTokenFactory = new ethers.Contract(kovanSuperTokenFactoryAddress, ISuperTokenFactoryABI, signer);
+  const superTokenFactory = new ethers.Contract(SuperTokenFactoryAddress, ISuperTokenFactoryABI, signer);
 
   console.log("Invoking initializeCustomSuperToken...");
   
@@ -29,10 +30,14 @@ async function main() {
   
   console.log("Invoking Initialize on the token contract...");
   
-  await nativeSuperTokenProxy.initialize("My Native Super Token", "MNST", "1000000000000", {gasPrice: 200000000, gasLimit: 300000}).then(console.log)
+  let updatedNonce;
+  updatedNonce = await provider.getTransactionCount(signer.address, "latest") + 1;
+  
+  //may need to update gas price and limit
+  await nativeSuperTokenProxy.initialize("My Native Super Token", "MNST", "1000000000000").then(console.log)
 }
 
-// {gasPrice: 20000000000, gasLimit: 30000000}
+//{gasPrice: 200000000000, gasLimit: 30000000}
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main()

@@ -4,6 +4,7 @@
 2) Add custom logic in your NativeSuperTokenProxy.sol contract if you would like
 3) Deploy the token using the deployToken script. Make sure you include your own super token name, symbol, and supply
 4) Verify the contract using ```npx hardhat verify --network YOUR_NETWORK DEPLOYED_CONTRACT_ADDRESS```
+5) On Etherscan in the contract's 'Code' section, select Options > Is this a proxy? > Verify the proxy contract 
 
 
 # Basic Sample Hardhat Project

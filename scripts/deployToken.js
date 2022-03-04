@@ -5,8 +5,8 @@ const hre = require("hardhat");
 require("dotenv")
 const ISuperTokenFactory = require("../artifacts/@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperTokenFactory.sol/ISuperTokenFactory.json");
 const ISuperTokenFactoryABI = ISuperTokenFactory.abi;
-//note - need to change this address to the super token factory on your network. this is for kovan
-const SuperTokenFactoryAddress = "0xF5F666AC8F581bAef8dC36C7C8828303Bd4F8561";
+//note - need to change this address to the super token factory on your network. this is for polygon
+const SuperTokenFactoryAddress = "0x2C90719f25B10Fc5646c82DA3240C76Fa5BcCF34";
 const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 
 async function main() {
@@ -22,22 +22,29 @@ async function main() {
 
   console.log('native super token proxy deployed to: ', nativeSuperTokenProxy.address);
 
-  const superTokenFactory = new ethers.Contract(SuperTokenFactoryAddress, ISuperTokenFactoryABI, signer);
+  const superTokenFactory = new ethers.Contract(SuperTokenFactoryAddress, ISuperTokenFactoryABI, provider);
 
   console.log("Invoking initializeCustomSuperToken...");
+
+  const initializeCustomSuperTokenEstimate = await superTokenFactory.estimateGas.initializeCustomSuperToken(nativeSuperTokenProxy.address);
+
+  console.log("initialize custom token gas estimation: ", initializeCustomSuperTokenEstimate.toString());
   
-  await superTokenFactory.initializeCustomSuperToken(nativeSuperTokenProxy.address).then(console.log);
+  await superTokenFactory.connect(signer).initializeCustomSuperToken(nativeSuperTokenProxy.address, {gasPrice: 100000000000, gasLimit: initializeCustomSuperTokenEstimate})
   
   console.log("Invoking Initialize on the token contract...");
+
+  const initializeEstimate = await nativeSuperTokenProxy.estimateGas.initialize("My Native Super Token", "MNST", "1000000000000");
   
+  console.log("initialize custom token gas estimation: ", initializeCustomSuperTokenEstimate);
+
   let updatedNonce;
   updatedNonce = await provider.getTransactionCount(signer.address, "latest") + 1;
   
   //may need to update gas price and limit
-  await nativeSuperTokenProxy.initialize("My Native Super Token", "MNST", "1000000000000").then(console.log)
+  await nativeSuperTokenProxy.initialize("My Native Super Token", "MNST", "1000000000000", {nonce: updatedNonce, gasPrice: 100000000000, gasLimit: initializeEstimate });
 }
 
-//{gasPrice: 200000000000, gasLimit: 30000000}
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main()

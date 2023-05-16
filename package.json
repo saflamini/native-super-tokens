@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@superfluid-finance/ethereum-contracts": "^1.0.0-rc.11",
+    "@openzeppelin/contracts": "^4.8.3",
+    "@superfluid-finance/ethereum-contracts": "^1.6.0",
     "dotenv": "^16.0.0",
     "hardhat": "^2.8.4",
     "hardhat-deploy": "^0.10.5"

@@ -22,27 +22,27 @@ async function main() {
 
   console.log('native super token proxy deployed to: ', nativeSuperTokenProxy.address);
 
-  const superTokenFactory = new ethers.Contract(SuperTokenFactoryAddress, ISuperTokenFactoryABI, provider);
+  // const superTokenFactory = new ethers.Contract(SuperTokenFactoryAddress, ISuperTokenFactoryABI, provider);
 
-  console.log("Invoking initializeCustomSuperToken...");
+  // console.log("Invoking initializeCustomSuperToken...");
 
-  const initializeCustomSuperTokenEstimate = await superTokenFactory.estimateGas.initializeCustomSuperToken(nativeSuperTokenProxy.address);
+  // const initializeCustomSuperTokenEstimate = await superTokenFactory.estimateGas.initializeCustomSuperToken(nativeSuperTokenProxy.address);
 
-  console.log("initialize custom token gas estimation: ", initializeCustomSuperTokenEstimate.toString());
+  // console.log("initialize custom token gas estimation: ", initializeCustomSuperTokenEstimate.toString());
   
-  await superTokenFactory.connect(signer).initializeCustomSuperToken(nativeSuperTokenProxy.address, {gasPrice: 100000000000, gasLimit: initializeCustomSuperTokenEstimate})
+  // await superTokenFactory.connect(signer).initializeCustomSuperToken(nativeSuperTokenProxy.address, {gasPrice: 100000000000, gasLimit: initializeCustomSuperTokenEstimate})
   
-  console.log("Invoking Initialize on the token contract...");
+  // console.log("Invoking Initialize on the token contract...");
 
-  const initializeEstimate = await nativeSuperTokenProxy.estimateGas.initialize("My Native Super Token", "MNST", "1000000000000");
+  // const initializeEstimate = await nativeSuperTokenProxy.estimateGas.initialize("My Native Super Token", "MNST", "1000000000000");
   
-  console.log("initialize custom token gas estimation: ", initializeCustomSuperTokenEstimate);
+  // console.log("initialize custom token gas estimation: ", initializeCustomSuperTokenEstimate);
 
-  let updatedNonce;
-  updatedNonce = await provider.getTransactionCount(signer.address, "latest") + 1;
+  // let updatedNonce;
+  // updatedNonce = await provider.getTransactionCount(signer.address, "latest") + 1;
   
-  //may need to update gas price and limit
-  await nativeSuperTokenProxy.initialize("My Native Super Token", "MNST", "1000000000000", {nonce: updatedNonce, gasPrice: 100000000000, gasLimit: initializeEstimate });
+  // //may need to update gas price and limit
+  // await nativeSuperTokenProxy.initialize("My Native Super Token", "MNST", "1000000000000", {nonce: updatedNonce, gasPrice: 100000000000, gasLimit: initializeEstimate });
 }
 
 // We recommend this pattern to be able to use async/await everywhere

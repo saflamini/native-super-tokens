@@ -25,7 +25,15 @@ const defaultNetwork = 'mumbai';
  */
 module.exports = {
   defaultNetwork,
-  solidity: "0.8.19",
+  solidity: {
+      version: "0.8.19",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 1000,
+        },
+      },
+  },
   networks: {
     mumbai: {
       url: `${process.env.RPC_URL}`,
